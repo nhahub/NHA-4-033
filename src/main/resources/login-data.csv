@@ -1,0 +1,5 @@
+username,password,shouldLogin,expectedUrlPart
+standard_user,secret_sauce,true,inventory.html
+standard_user,wrong_password,false,saucedemo.com
+,secret_sauce,false,saucedemo.com
+standard_user,,false,saucedemo.com

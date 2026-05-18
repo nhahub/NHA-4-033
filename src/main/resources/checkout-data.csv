@@ -1,0 +1,5 @@
+firstName,lastName,postalCode,shouldPass,expectedMessagePart
+John,Doe,12345,true,Thank you
+,,12345,false,First Name is required
+John,,12345,false,Last Name is required
+John,Doe,,false,Postal Code is required

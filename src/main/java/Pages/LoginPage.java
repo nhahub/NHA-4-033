@@ -50,6 +50,28 @@ public class LoginPage {
         return ElementActions.getText(driver, errorMessage);
     }
 
+
+    public boolean isErrorMessageDisplayed(){
+        return driver.findElement(errorMessage)
+                .isDisplayed();
+    }
+
+    public boolean isUsernameFieldVisible() {
+        return ElementActions.isDisplayed(driver, username);
+    }
+
+    public boolean isPasswordFieldVisible() {
+        return ElementActions.isDisplayed(driver, password);
+    }
+
+    public void login(String username,
+                      String password){
+
+        enterUsername(username);
+        enterPassword(password);
+        clickLoginButton();
+    }
+
     //validation
     public LoginPage assertSuccessfulLogin() {
 
@@ -61,4 +83,38 @@ public class LoginPage {
         Assert.assertEquals(getErrorMessage(), "Epic sadface: Username and password do not match any user in this service");
         return this;
     }
+    public LoginPage assertErrorMessageDisplayed() {
+
+        Assert.assertTrue(
+                driver.findElement(errorMessage)
+                        .isDisplayed()
+        );
+
+        return this;
+    }
+
+    public LoginPage assertUsernameRequiredMessage() {
+
+        Assert.assertEquals(
+                driver.findElement(errorMessage)
+                        .getText(),
+                "Epic sadface: Username is required"
+        );
+
+        return this;
+    }
+
+    public LoginPage assertPasswordRequiredMessage() {
+
+        Assert.assertEquals(
+                driver.findElement(errorMessage)
+                        .getText(),
+                "Epic sadface: Password is required"
+        );
+
+        return this;
+    }
+
+
+
 }
