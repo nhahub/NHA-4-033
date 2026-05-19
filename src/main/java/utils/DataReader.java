@@ -12,8 +12,14 @@ public class DataReader {
         List<String[]> rows = new ArrayList<>();
 
         try {
+            // Locates the file directly from the marked Resources Root
             InputStream stream = DataReader.class.getClassLoader().getResourceAsStream(fileName);
+            if (stream == null) {
+                throw new RuntimeException("Resource file not found: " + fileName);
+            }
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            // Read and skip the header row (username,password,expectedResult)
             String line = reader.readLine();
 
             while ((line = reader.readLine()) != null) {

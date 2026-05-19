@@ -26,7 +26,7 @@ public class LogoutTest {
         new LoginPage(driver)
                 .enterUsername("standard_user")
                 .enterPassword("secret_sauce")
-                .clickLoginButton();
+                .clickLogin();
 
         logoutPage = new LogoutPage(driver);
     }

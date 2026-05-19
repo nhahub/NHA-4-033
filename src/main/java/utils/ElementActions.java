@@ -20,7 +20,7 @@ public class ElementActions {
     }
 
     //click
-    public static void clickElement(WebDriver driver, By locator) {
+    public static void click(WebDriver driver, By locator) {
         Waits.waitForElementClickable(driver, locator);
         Scrolling.scrollToElement(driver, locator);
         findElement(driver, locator).click();

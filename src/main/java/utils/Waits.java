@@ -12,6 +12,10 @@ public class Waits {
 
 
     private static final int WAIT_SECONDS = 10;
+
+    public Waits(WebDriver driver) {
+    }
+
     //1-wait for element to be present
     public static WebElement waitForElementPresent(WebDriver driver, By locator) {
         return new WebDriverWait(driver, Duration.ofSeconds(WAIT_SECONDS))

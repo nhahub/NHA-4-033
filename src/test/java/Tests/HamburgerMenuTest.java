@@ -1,57 +1,57 @@
 package Tests;
-
+import Base.BaseTest;
 import Pages.HamburgerMenuPage;
-import Pages.LoginPage;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.*;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-public class HamburgerMenuTest {
 
-    WebDriver driver;
 
-    HamburgerMenuPage hamburgerMenuPage;
+public class HamburgerMenuTest extends BaseTest {
+
+    private HamburgerMenuPage hamburgerMenuPage;
 
     @BeforeMethod
-    public void setup() {
-
-        driver = new ChromeDriver();
-
-        driver.manage().window().maximize();
-
-        driver.get("https://www.saucedemo.com/");
-
-        // Login first
-
-        new LoginPage(driver)
-                .enterUsername("standard_user")
-                .enterPassword("secret_sauce").clickLoginButton();
-
-
-        hamburgerMenuPage =
-                new HamburgerMenuPage(driver);
+    public void navigateToDashboard() {
+        loginWithValidUser();
+        hamburgerMenuPage = new HamburgerMenuPage(driver);
     }
 
-    @Test(priority = 1)
-    public void verifyMenuCanBeOpened() {
+    @Test(description = "Verify that clicking 'All Items' redirects to the inventory page")
+    public void testAllItemsLink() {
+        driver.get("https://www.saucedemo.com/cart.html");
 
-        hamburgerMenuPage
-                .openMenu()
-                .assertMenuOpened();
+        hamburgerMenuPage.openMenu();
+        hamburgerMenuPage.clickAllItems();
+
+        Assert.assertTrue(driver.getCurrentUrl().contains("inventory.html"),
+                "All Items link did not redirect back to the product catalog.");
     }
 
-    @Test(priority = 2)
-    public void verifyUserCanLogout() {
+    @Test(description = "Verify that clicking 'About' redirects to the official Sauce Labs company page")
+    public void testAboutLink() {
+        hamburgerMenuPage.openMenu();
+        hamburgerMenuPage.clickAbout();
 
-        hamburgerMenuPage
-                .openMenu()
-                .clickLogout()
-                .assertLogoutSuccessful();
+        Assert.assertEquals(driver.getCurrentUrl(), "https://saucelabs.com/",
+                "About link did not redirect to the correct corporate landing page.");
     }
 
-    @AfterMethod
-    public void tearDown() {
+    @Test(description = "Verify that clicking 'Logout' terminates the session and returns to login screen")
+    public void testLogoutLink() {
+        hamburgerMenuPage.openMenu();
+        hamburgerMenuPage.clickLogout();
 
-        driver.quit();
+        Assert.assertEquals(driver.getCurrentUrl(), BASE_URL,
+                "Logout action did not return the user back to the base authentication portal.");
+        Assert.assertFalse(driver.getCurrentUrl().contains("inventory.html"));
+    }
+
+    @Test(description = "Verify that 'Reset App State' clears active session configurations smoothly")
+    public void testResetAppStateLink() {
+        hamburgerMenuPage.openMenu();
+        hamburgerMenuPage.clickResetAppState();
+        Assert.assertTrue(driver.getCurrentUrl().contains("inventory.html"),
+                "Reset App State disrupted the application context state unexpectly.");
     }
 }

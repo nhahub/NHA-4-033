@@ -26,7 +26,7 @@ public class FilterTest {
         new LoginPage(driver)
                 .enterUsername("problem_user")
                 .enterPassword("secret_sauce")
-                .clickLoginButton();
+                .clickLogin();
 
         filterPage = new FilterPage(driver);
     }
