@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import java.time.Duration;
 
@@ -20,8 +21,12 @@ public class BaseTest {
 
     @BeforeMethod
     public void setup() {
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--incognito");
+        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
+<<<<<<< HEAD
         driver.get(BASE_URL);
 
         loginPage = new LoginPage(driver);
@@ -35,9 +40,13 @@ public class BaseTest {
         driver.manage().window().maximize();
 
         driver.get("https://www.saucedemo.com/");*/
+=======
+
+        driver.get("https://www.saucedemo.com/");
+>>>>>>> 542618504cf8247e2ec90c9d7bd08823f7fed60d
     }
 
-    @AfterClass
+     @AfterMethod
     public void tearDown() {
         driver.quit();
     }

@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 public class ProductTest extends BaseTest {
 
+<<<<<<< HEAD
     private ProductPage products_page;
 
     @BeforeMethod
@@ -36,8 +37,33 @@ public class ProductTest extends BaseTest {
 
 
     @Test
+=======
+  private ProductPage products_page;
+
+    @BeforeMethod
+  public void login_before_product_tests() {
+     loginPage = new LoginPage(driver);
+     loginWithValidUser();
+        products_page = new ProductPage(driver);
+  }
+
+  @Test
+    public void test_products_page_title() {
+        String title = products_page.get_page_title_text();
+     Assert.assertEquals(title, "Products", "Page title should be Products");
+  }
+
+  @Test
+    public void test_product_names_and_prices_visible() {
+        Assert.assertTrue(products_page.are_product_names_visible(), "Product names should be visible");
+  Assert.assertTrue(products_page.are_product_prices_visible(), "Product prices should be visible");
+    }
+
+
+  @Test
+>>>>>>> 542618504cf8247e2ec90c9d7bd08823f7fed60d
     public void test_products_page_url() {
         String url = BrowserActions.getCurrentUrl(driver);
-        Assert.assertTrue(url.contains("inventory.html"), "URL should be the inventory page");
+  Assert.assertTrue(url.contains("inventory.html"), "URL should be the inventory page");
     }
 }

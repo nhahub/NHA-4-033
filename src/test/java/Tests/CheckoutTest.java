@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 public class CheckoutTest extends BaseTest {
 
+<<<<<<< HEAD
     private ProductPage products_page;
     private CartPage cart_page;
     private CheckoutPage checkout_page;
@@ -44,6 +45,39 @@ public class CheckoutTest extends BaseTest {
     public void test_complete_checkout(String first_name, String last_name, String postal_code,
                                        String should_pass, String expected_message_part) {
         checkout_page.fill_checkout_info(first_name, last_name, postal_code);
+=======
+  private ProductPage products_page;
+    private CartPage cart_page;
+  private CheckoutPage checkout_page;
+
+  @DataProvider(name = "checkoutData")
+    public Object[][] get_checkout_data() {
+     return DataReader.readCsv("checkout-data.csv");
+    }
+
+  @BeforeMethod
+  public void login_and_add_product() {
+        loginPage = new LoginPage(driver);
+        loginWithValidUser();
+     products_page = new ProductPage(driver);
+  cart_page = new CartPage(driver);
+        checkout_page = new CheckoutPage(driver);
+
+    products_page.add_product_to_cart_by_id("sauce-labs-backpack");
+  products_page.open_cart();
+     cart_page.click_checkout();
+    }
+
+  @Test
+    public void test_checkout_step_one_opens() {
+        Assert.assertTrue(checkout_page.is_on_checkout_step_one(), "Should be on checkout step one");
+  }
+
+    @Test(dataProvider = "checkoutData")
+  public void test_complete_checkout(String first_name, String last_name, String postal_code,
+                                     String should_pass, String expected_message_part) {
+     checkout_page.fill_checkout_info(first_name, last_name, postal_code);
+>>>>>>> 542618504cf8247e2ec90c9d7bd08823f7fed60d
 
         if (Boolean.parseBoolean(should_pass)) {
             checkout_page.click_finish();
@@ -58,9 +92,15 @@ public class CheckoutTest extends BaseTest {
     }
 
 
+<<<<<<< HEAD
     @Test
     public void test_checkout_url() {
         String url = BrowserActions.getCurrentUrl(driver);
+=======
+  @Test
+    public void test_checkout_url() {
+     String url = BrowserActions.getCurrentUrl(driver);
+>>>>>>> 542618504cf8247e2ec90c9d7bd08823f7fed60d
         Assert.assertTrue(url.contains("checkout-step-one"), "URL should be checkout step one");
     }
 }

@@ -1,0 +1,1 @@
+{"uuid":"af29573b-276c-454e-b742-4d638b37a479","name":"Tests.HamburgerMenuTest.setup","children":["0195e5b9-a047-43ed-8b01-911b57d924fc"],"description":"","befores":[{"name":"setup","status":"passed","stage":"finished","description":"","steps":[],"attachments":[],"parameters":[],"start":1779211386526,"stop":1779211390694}],"afters":[],"start":1779211386526,"stop":1779211390694}
