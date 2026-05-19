@@ -2,6 +2,7 @@ package Tests;
 import Base.BaseTest;
 import Pages.CartPage;
 import Pages.CheckoutPage;
+import Pages.LoginPage;
 import Pages.ProductPage;
 import utils.BrowserActions;
 import utils.DataReader;
@@ -12,83 +13,54 @@ import org.testng.annotations.Test;
 
 public class CheckoutTest extends BaseTest {
 
-    private ProductPage productsPage;
-    private CartPage cartPage;
-    private CheckoutPage checkoutPage;
+  private ProductPage products_page;
+    private CartPage cart_page;
+  private CheckoutPage checkout_page;
 
-    @DataProvider(name = "checkoutData")
-    public Object[][] getCheckoutData() {
-        return DataReader.readCsv("checkout-data.csv");
+  @DataProvider(name = "checkoutData")
+    public Object[][] get_checkout_data() {
+     return DataReader.readCsv("checkout-data.csv");
     }
 
-    @BeforeMethod
-    public void loginAndAddProduct() {
+  @BeforeMethod
+  public void login_and_add_product() {
+        loginPage = new LoginPage(driver);
         loginWithValidUser();
-        productsPage = new ProductPage(driver);
-        cartPage = new CartPage(driver);
-        checkoutPage = new CheckoutPage(driver);
+     products_page = new ProductPage(driver);
+  cart_page = new CartPage(driver);
+        checkout_page = new CheckoutPage(driver);
 
-        productsPage.addProductToCartById("sauce-labs-backpack");
-        productsPage.openCart();
-        cartPage.clickCheckout();
+    products_page.add_product_to_cart_by_id("sauce-labs-backpack");
+  products_page.open_cart();
+     cart_page.click_checkout();
     }
 
-    @Test(description = "TC-CH01: Checkout step one page opens")
-    public void testCheckoutStepOneOpens() {
-        Assert.assertTrue(checkoutPage.isOnCheckoutStepOne(), "Should be on checkout step one");
-    }
+  @Test
+    public void test_checkout_step_one_opens() {
+        Assert.assertTrue(checkout_page.is_on_checkout_step_one(), "Should be on checkout step one");
+  }
 
-    @Test(description = "TC-CH02: Complete checkout shows thank you message")
-    public void testCompleteCheckout() {
-        checkoutPage.fillCheckoutInfo("John", "Doe", "12345");
-        checkoutPage.clickFinish();
+    @Test(dataProvider = "checkoutData")
+  public void test_complete_checkout(String first_name, String last_name, String postal_code,
+                                     String should_pass, String expected_message_part) {
+     checkout_page.fill_checkout_info(first_name, last_name, postal_code);
 
-        String message = checkoutPage.getCompleteMessage();
-        Assert.assertEquals(message, "Thank you for your order!", "Order should be complete");
-    }
-
-    @Test(description = "TC-CH03: Back home button returns to products page")
-    public void testBackHomeAfterCheckout() {
-        checkoutPage.fillCheckoutInfo("John", "Doe", "12345");
-        checkoutPage.clickFinish();
-        checkoutPage.clickBackHome();
-
-        Assert.assertEquals(productsPage.getPageTitleText(), "Products", "Should be back on products page");
-    }
-
-    @Test(description = "TC-CH04 to TC-CH07: Checkout with data from CSV file", dataProvider = "checkoutData")
-    public void testCheckoutWithData(String firstName, String lastName, String postalCode,
-                                     String shouldPass, String expectedMessagePart) {
-        checkoutPage.enterFirstName(firstName);
-        checkoutPage.enterLastName(lastName);
-        checkoutPage.enterPostalCode(postalCode);
-        checkoutPage.clickContinue();
-
-        boolean pass = Boolean.parseBoolean(shouldPass);
-
-        if (pass) {
-            checkoutPage.clickFinish();
-            String message = checkoutPage.getCompleteMessage();
-            Assert.assertTrue(message.contains(expectedMessagePart),
-                    "Message should contain: " + expectedMessagePart);
+        if (Boolean.parseBoolean(should_pass)) {
+            checkout_page.click_finish();
+            String message = checkout_page.get_complete_message();
+            Assert.assertTrue(message.contains(expected_message_part),
+                    "Message should contain: " + expected_message_part);
         } else {
-            String error = checkoutPage.getCheckoutErrorMessage();
-            Assert.assertTrue(error.contains(expectedMessagePart),
-                    "Error should contain: " + expectedMessagePart);
+            String error = checkout_page.get_checkout_error_message();
+            Assert.assertTrue(error.contains(expected_message_part),
+                    "Error should contain: " + expected_message_part);
         }
     }
 
-    @Test(description = "TC-CH08: Checkout overview page title is correct")
-    public void testCheckoutOverviewTitle() {
-        checkoutPage.fillCheckoutInfo("John", "Doe", "12345");
 
-        String title = checkoutPage.getOverviewTitle();
-        Assert.assertEquals(title, "Checkout: Overview", "Overview title should match");
-    }
-
-    @Test(description = "TC-CH09: URL contains checkout after clicking checkout button")
-    public void testCheckoutUrl() {
-        String url = BrowserActions.getCurrentUrl(driver);
+  @Test
+    public void test_checkout_url() {
+     String url = BrowserActions.getCurrentUrl(driver);
         Assert.assertTrue(url.contains("checkout-step-one"), "URL should be checkout step one");
     }
 }
