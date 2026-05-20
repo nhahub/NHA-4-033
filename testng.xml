@@ -4,7 +4,10 @@
 
     <test name="Login Tests">
           <classes>
-
+              <!--<class name="Tests.LoginTest"/>
+              <class name="Tests.ProductTest"/>
+              <class name="Tests.CartTest"/>
+              <class name="Tests.CheckoutTest"/>-->
               <class name="Tests.HamburgerMenuTest" />
           </classes>
     </test>

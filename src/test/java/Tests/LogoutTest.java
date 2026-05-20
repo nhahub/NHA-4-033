@@ -43,6 +43,7 @@ public class LogoutTest {
     public void verifyUserCanLogout() {
 
         logoutPage
+                .openHamburgerMenu()
                 .logout()
                 .assertLogoutSuccessful();
     }
