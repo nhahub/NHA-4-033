@@ -20,30 +20,14 @@ public class BaseTest {
     protected LoginPage loginPage;
 
     @BeforeMethod
+
     public void setup() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--incognito");
-        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
-<<<<<<< HEAD
         driver.get(BASE_URL);
 
         loginPage = new LoginPage(driver);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-
-
-      /*  ChromeOptions options = new ChromeOptions();
-        options.addArguments("--incognito");
-        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-        driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
-
-        driver.get("https://www.saucedemo.com/");*/
-=======
-
-        driver.get("https://www.saucedemo.com/");
->>>>>>> 542618504cf8247e2ec90c9d7bd08823f7fed60d
     }
 
      @AfterMethod
